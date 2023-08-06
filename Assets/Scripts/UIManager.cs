@@ -6,35 +6,59 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    //--------------- Variables --------------------
 
-    public static GameObject gamePanel;
-    public static GameObject endPanel;
+    [SerializeField] 
+    private GameObject gamePanel;
 
-    public static GameObject endTimerTxt;
-    public static GameObject endRestartCounter;
+    [SerializeField]
+    private GameObject endPanel;
 
+    [SerializeField]
+    private GameObject endTimerTxt;
+
+    [SerializeField]
+    private GameObject endRestartCounter;
+
+    [SerializeField]
+    private GameManager gameManager;
+
+    //--------------- Encapsulation --------------------
+
+    public GameObject GamePanel { get => gamePanel; set => gamePanel = value; }
+    public GameObject EndPanel { get => endPanel; set => endPanel = value; }
+    public GameObject EndTimerTxt { get => endTimerTxt; set => endTimerTxt = value; }
+    public GameObject EndRestartCounter { get => endRestartCounter; set => endRestartCounter = value; }
+
+    //--------------- Methods --------------------
 
     void Start()
     {
-        gamePanel = GameObject.Find("GamePanel");
-        gamePanel.SetActive(true);
+        //GamePanel = GameObject.Find("GamePanel");
+        GamePanel.SetActive(true);
 
-        endTimerTxt = GameObject.Find("CompletedTimeTxt");
-        endRestartCounter = GameObject.Find("RestartCounterTxt");
+        EndTimerTxt = GameObject.Find("CompletedTimeTxt");
+        EndRestartCounter = GameObject.Find("RestartCounterTxt");
 
-        endPanel = GameObject.Find("EndPanel");
-        endPanel.SetActive(false);
+        //EndPanel = GameObject.Find("EndPanel");
+        EndPanel.SetActive(false);
+    }
+
+    public void LoadMainMenu()
+    {
+        gameManager.RestartCounter = 0;
+        SceneManager.LoadScene(0);
     }
 
     public void RestartLevelInGame()
     {
-        GameManager.restartCounter++;
+        gameManager.RestartCounter++;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void RestartLevel()
     {
-        GameManager.restartCounter = 0;
+        gameManager.RestartCounter = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -56,7 +80,7 @@ public class UIManager : MonoBehaviour
 
     public void NextLevel()
     {
-        GameManager.restartCounter = 0;
+        gameManager.RestartCounter = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

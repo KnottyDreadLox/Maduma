@@ -6,23 +6,38 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public static float timeLeft;
-    TextMeshProUGUI clockText;
-    public static bool startClock = false;
-    public static int restartCounter = 0;
+    //--------------- Variables --------------------
 
-    public static GameObject completedTimer;
-    public static GameObject completedRestarts;
+    private float timeLeft;
+    TextMeshProUGUI clockText;
+
+    private bool startClock = false;
+
+    private int restartCounter = 0;
+
+    private GameObject completedTimer;
+    private GameObject completedRestarts;
+
+    [SerializeField]
+    private UIManager uiManager;
+
+    //--------------- Encapsulation --------------------
+
+    public bool StartClock { get => startClock; set => startClock = value; }
+    public int RestartCounter { get => restartCounter; set => restartCounter = value; }
+
+    //--------------- Methods --------------------
+
 
     private void Start()
     {
         clockText = GameObject.Find("TimeTxt").GetComponent<TextMeshProUGUI>();
-        startClock = false;
+        StartClock = false;
     }
 
     void Update()
     {
-        if (startClock == true)
+        if (StartClock == true)
         {
             timeLeft += Time.deltaTime;
             clockText.text = "Time Elapsed: " + timeLeft.ToString("F2");
@@ -44,38 +59,38 @@ public class GameManager : MonoBehaviour
         //}
     }
 
-    public static void CompleteLevel()
+    public void CompleteLevel()
     {
-        startClock = false;
+        StartClock = false;
 
-        UIManager.gamePanel.SetActive(false);
-        UIManager.endPanel.SetActive(true);
+        uiManager.GamePanel.SetActive(false);
+        uiManager.EndPanel.SetActive(true);
 
-        UIManager.endTimerTxt.GetComponent<TextMeshProUGUI>().text = "Completed in : " + timeLeft.ToString("F2") + " seconds";
+        uiManager.EndTimerTxt.GetComponent<TextMeshProUGUI>().text = "Completed in : " + timeLeft.ToString("F2") + " seconds";
 
 
-        if (restartCounter == 1)
+        if (RestartCounter == 1)
         {
-            UIManager.endRestartCounter.GetComponent<TextMeshProUGUI>().text = "You restarted " + restartCounter + " time !";
+            uiManager.EndRestartCounter.GetComponent<TextMeshProUGUI>().text = "You restarted " + RestartCounter + " time !";
         }
         else
         {
-            UIManager.endRestartCounter.GetComponent<TextMeshProUGUI>().text = "You restarted " + restartCounter + " times !";
+            uiManager.EndRestartCounter.GetComponent<TextMeshProUGUI>().text = "You restarted " + RestartCounter + " times !";
         }
 
     }
 
-    public static void TurnCameraClockwise()
+    public void TurnCameraClockwise()
     {
         Camera.main.transform.rotation = Quaternion.Euler(0f, 0f, -90f);
     }
 
-    public static void TurnCameraAntiClockwise()
+    public void TurnCameraAntiClockwise()
     {
         Camera.main.transform.rotation = Quaternion.Euler(0f, 0f, 90f);
     }
 
-    public static void TurnCameraDefault()
+    public void TurnCameraDefault()
     {
         Camera.main.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
     }
