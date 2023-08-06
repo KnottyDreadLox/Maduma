@@ -158,6 +158,7 @@ public class TileManager : MonoBehaviour
                             clockwise = false;
                             anticlockwise = false;
                             gameManager.TurnCameraDefault();
+                            SwitchState("normal");
                         }
 
                         //Turn Clockwise
@@ -178,6 +179,7 @@ public class TileManager : MonoBehaviour
                             clockwise = false;
                             anticlockwise = false;
                             gameManager.TurnCameraDefault();
+                            SwitchState("normal");
                         }
 
                         //Turn Anticlockwise
@@ -208,33 +210,38 @@ public class TileManager : MonoBehaviour
                         }
                     }
 
-                    foreach (var position in BaseTilemap.cellBounds.allPositionsWithin)
+                    //Check if tile is a special tile
+                    if (!activeTileSprite.name.Contains("Anticlockwise") && !activeTileSprite.name.Contains("Clockwise"))
                     {
-                        //if nothing exists, do nothing
-                        if (!BaseTilemap.HasTile(position))
+                        //Destroy other tiles of same colour
+                        foreach (var position in BaseTilemap.cellBounds.allPositionsWithin)
                         {
-                            continue;
-                        }
-
-                        //if this tile is the same as the active tile, ignore it
-                        else if (position == activeTileCoordinate)
-                        {
-                            Sprite otherTiles = BaseTilemap.GetSprite(position);
-                            Debug.Log("<color=green> Active tile is at </color> " + position + " and is " + otherTiles.name);
-                        }
-
-                        //else remove all tiles that match the active tile
-                        //tiles are added to dictionary to be revived
-                        else
-                        {
-                            Sprite otherTile = BaseTilemap.GetSprite(position);
-
-                            if (otherTile.name == activeTileSprite.name)
+                            //if nothing exists, do nothing
+                            if (!BaseTilemap.HasTile(position))
                             {
-                                removedTiles.Add(position, otherTile.name);
-                                BaseTilemap.SetTile(position, null);
+                                continue;
                             }
 
+                            //if this tile is the same as the active tile, ignore it
+                            else if (position == activeTileCoordinate)
+                            {
+                                Sprite otherTiles = BaseTilemap.GetSprite(position);
+                                Debug.Log("<color=green> Active tile is at </color> " + position + " and is " + otherTiles.name);
+                            }
+
+                            //else remove all tiles that match the active tile
+                            //tiles are added to dictionary to be revived
+                            else
+                            {
+                                Sprite otherTile = BaseTilemap.GetSprite(position);
+
+                                if (otherTile.name == activeTileSprite.name)
+                                {
+                                    removedTiles.Add(position, otherTile.name);
+                                    BaseTilemap.SetTile(position, null);
+                                }
+
+                            }
                         }
                     }
 
