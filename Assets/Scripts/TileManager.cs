@@ -54,8 +54,10 @@ public class TileManager : MonoBehaviour
     Dictionary<Vector3Int, string> removedTiles;
 
 
-    bool clockwise = false;
-    bool anticlockwise = false;
+    //bool clockwise = false;
+    //bool anticlockwise = false;
+
+    private string state;
 
     //--------------- Encapsulation --------------------
 
@@ -73,6 +75,8 @@ public class TileManager : MonoBehaviour
         m = startCoordinates - mid;
         b = startCoordinates - bot;
 
+        state = "normal";
+
         //Bounds is how big the tiles being used is
         bounds = new BoundsInt(BaseTilemap.origin, BaseTilemap.size);
         tilebaseArray = BaseTilemap.GetTilesBlock(bounds);
@@ -89,6 +93,7 @@ public class TileManager : MonoBehaviour
         switch (_case)
         {
             case "normal":
+                state = "normal";
                 t = activeTileCoordinate - top;
                 m = activeTileCoordinate - mid;
                 b = activeTileCoordinate - bot;
@@ -96,6 +101,7 @@ public class TileManager : MonoBehaviour
                 break;
 
             case "clockwise":
+                state = "clockwise";
                 t = activeTileCoordinate - ClockwiseTop;
                 m = activeTileCoordinate - ClockwiseMid;
                 b = activeTileCoordinate - ClockwiseBot;
@@ -103,10 +109,19 @@ public class TileManager : MonoBehaviour
                 break;
 
             case "anticlockwise":
+                state = "anticlockwise";
                 t = activeTileCoordinate - AntiClockwiseTop;
                 m = activeTileCoordinate - AntiClockwiseMid;
                 b = activeTileCoordinate - AntiClockwiseBot;
                 Debug.Log("<color=lime> Switched to Anticlockwise </color>");
+                break;
+
+            case "inverse":
+                state = "inverse";
+                t = activeTileCoordinate + top;
+                m = activeTileCoordinate + mid;
+                b = activeTileCoordinate + bot;
+                Debug.Log("<color=lime> Switched to Inverse </color>");
                 break;
         }
 
@@ -137,78 +152,7 @@ public class TileManager : MonoBehaviour
                     //put the sprite marker on this to know where play is on the second overlay
                     OverlayTilemap.SetTile(activeTileCoordinate, OverlayTile);
 
-                    //If this tile is Endgame Tile, Finish level
-                    if (activeTileSprite.name == "Finish")
-                    {
-                        gameManager.CompleteLevel();
-                    }
 
-                    //if this tile is a ressurection tile
-                    if (activeTileSprite.name.Contains("Return"))
-                    {
-                        ReturnTiles(activeTileSprite.name);
-                    }
-
-                    //if this is the Clockwise Tile
-                    if (activeTileSprite.name.Contains("Clockwise"))
-                    {
-                        //If Already Clockwise - Return to normal
-                        if (clockwise == true)
-                        {
-                            clockwise = false;
-                            anticlockwise = false;
-                            gameManager.TurnCameraDefault();
-                            SwitchState("normal");
-                        }
-
-                        //Turn Clockwise
-                        else
-                        {
-                            clockwise = true;
-                            gameManager.TurnCameraClockwise();
-                            SwitchState("clockwise");
-                        }
-                    }
-
-                    //if this is the Anticlockwise Tile
-                    if (activeTileSprite.name.Contains("Anticlockwise"))
-                    {
-                        //If Already Antilockwise - Return to normal
-                        if (anticlockwise == true)
-                        {
-                            clockwise = false;
-                            anticlockwise = false;
-                            gameManager.TurnCameraDefault();
-                            SwitchState("normal");
-                        }
-
-                        //Turn Anticlockwise
-                        else
-                        {
-                            anticlockwise = true;
-                            gameManager.TurnCameraAntiClockwise();
-                            SwitchState("anticlockwise");
-                        }
-                    }
-
-                    //Where to move next conditions
-                    else
-                    {
-                        if(clockwise == true)
-                        {
-                            SwitchState("clockwise");
-                        }
-
-                        if(anticlockwise == true)
-                        {
-                            SwitchState("anticlockwise");
-                        }
-
-                        if(clockwise == false && anticlockwise == false)
-                        {
-                            SwitchState("normal");
-                        }
-                    }
 
                     //Check if tile is a special tile
                     if (!activeTileSprite.name.Contains("Anticlockwise") && !activeTileSprite.name.Contains("Clockwise"))
@@ -245,14 +189,64 @@ public class TileManager : MonoBehaviour
                         }
                     }
 
+                    //If this tile is Endgame Tile, Finish level
+                    if (activeTileSprite.name == "Finish")
+                    {
+                        gameManager.CompleteLevel();
+                    }
+
+                    //if this tile is a ressurection tile
+                    if (activeTileSprite.name.Contains("Return"))
+                    {
+                        ReturnTiles(activeTileSprite.name);
+                    }
+
+                    //if this is the Clockwise Tile
+                    if (activeTileSprite.name.Contains("Clockwise"))
+                    {
+
+                        gameManager.TurnCameraClockwise();
+                        SwitchState("clockwise");
+
+                    }
+
+                    //if this is the Anticlockwise Tile
+                    if (activeTileSprite.name.Contains("Anticlockwise"))
+                    {
+
+                        gameManager.TurnCameraAntiClockwise();
+                        SwitchState("anticlockwise");
+
+                    }
+
+                    //Where to move next conditions
+                    else
+                    {
+                        if(state == "clockwise")
+                        {
+                            SwitchState(state);
+                        }
+
+                        if(state == "anticlockwise")
+                        {
+                            SwitchState(state);
+                        }
+
+                        if(state == "normal")
+                        {
+                            SwitchState(state);
+                        }
+                    }
+
                     //Debug.Log("This is " + activeTileCoordinate + " Top is " + t + " Mid is " + m + " Bot is " + b);
 
                 }
 
-                removedTiles.ToList().ForEach(x =>
-                {
-                    //Debug.Log("Removed tiles " + x.Value + " at position " + x.Key);
-                });
+                //removed tiles Debug
+                //removedTiles.ToList().ForEach(x =>
+                //{
+                //    Debug.Log("Removed tiles " + x.Value + " at position " + x.Key);
+                //});
             }
             catch (Exception e)
             {
@@ -302,6 +296,12 @@ public class TileManager : MonoBehaviour
                 }
             }
         });
+    }
+
+
+    private void MakeMatrix(int[]top, int[]mid, int[]bot)
+    {
+
     }
 }
 

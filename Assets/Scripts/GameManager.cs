@@ -43,12 +43,12 @@ public class GameManager : MonoBehaviour
             clockText.text = "Time Elapsed: " + timeLeft.ToString("F2");
         }
 
-        //if (Input.GetKey(KeyCode.F2))
+        //if (Input.GetKey(KeyCode.F1))
         //{
         //    TurnCameraClockwise();
         //}
 
-        //if (Input.GetKey(KeyCode.F1))
+        //if (Input.GetKey(KeyCode.F2))
         //{
         //    TurnCameraAntiClockwise();
         //}
@@ -68,7 +68,6 @@ public class GameManager : MonoBehaviour
 
         uiManager.EndTimerTxt.GetComponent<TextMeshProUGUI>().text = "Completed in : " + timeLeft.ToString("F2") + " seconds";
 
-
         if (RestartCounter == 1)
         {
             uiManager.EndRestartCounter.GetComponent<TextMeshProUGUI>().text = "You restarted " + RestartCounter + " time !";
@@ -82,19 +81,16 @@ public class GameManager : MonoBehaviour
 
     public void TurnCameraClockwise()
     {
-        Camera.main.transform.rotation = Quaternion.Euler(0f, 0f, -90f);
+        Camera.main.transform.Rotate(0, 0, -90);
     }
 
     public void TurnCameraAntiClockwise()
     {
-        Camera.main.transform.rotation = Quaternion.Euler(0f, 0f, 90f);
+        Camera.main.transform.Rotate(0, 0, 90);
     }
 
     public void TurnCameraDefault()
     {
         Camera.main.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
     }
-
-
-
 }

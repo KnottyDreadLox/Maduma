@@ -167,10 +167,10 @@ RectTransform:
   m_Father: {fileID: 2598073315070075754}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -582.9, y: -387}
-  m_SizeDelta: {x: 417.6038, y: 64.6089}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 230, y: 32}
+  m_SizeDelta: {x: 417.6038, y: 64.60889}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7483096275407220568
 CanvasRenderer:
@@ -200,7 +200,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level 0 - Title
+  m_text: Level 1 - Primary Colours
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 976463fe045c52a4bad90b19c686b457, type: 2}
   m_sharedMaterial: {fileID: -7213063700134797779, guid: 976463fe045c52a4bad90b19c686b457, type: 2}
@@ -421,7 +421,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1841139938020904125
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1678,6 +1678,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbc7164a880fcf04c91a236bb16769ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gamePanel: {fileID: 8809145082458855401}
+  endPanel: {fileID: 1287955394030190547}
+  endTimerTxt: {fileID: 2794726063096453761}
+  endRestartCounter: {fileID: 7543865484560559744}
+  gameManager: {fileID: 0}
 --- !u!1 &7976144259649367088
 GameObject:
   m_ObjectHideFlags: 0
@@ -2071,7 +2076,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7976144258950342171}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: RestartLevelInGame
+        m_MethodName: LoadMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

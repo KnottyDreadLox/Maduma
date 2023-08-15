@@ -403,6 +403,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 8441986520939318184, guid: d73011959cdc3244c95fdf7b1dc1b79c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadMainMenu
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d73011959cdc3244c95fdf7b1dc1b79c, type: 3}
 --- !u!1 &310410136 stripped
