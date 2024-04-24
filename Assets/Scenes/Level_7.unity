@@ -1981,7 +1981,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 262259124}
-  startCoordinates: {x: -9, y: -1, z: 0}
   baseTilemap: {fileID: 383862386}
   overlayTilemap: {fileID: 1063022143}
   overlayTile: {fileID: 11400000, guid: e4ef263b8effdb640a18f019f658e102, type: 2}
@@ -2025,6 +2024,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 7290368966224943320, guid: 0524928892ee2ea48a5b6bd0c6eab563, type: 3}
+      propertyPath: tilemap
+      value: 
+      objectReference: {fileID: 383862386}
     - target: {fileID: 7290368966224943321, guid: 0524928892ee2ea48a5b6bd0c6eab563, type: 3}
       propertyPath: m_RootOrder
       value: 4
