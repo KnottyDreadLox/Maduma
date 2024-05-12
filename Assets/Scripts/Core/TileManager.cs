@@ -104,12 +104,14 @@ public class TileManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    { 
+    {
 
 
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         activeTileCoordinate = grid.WorldToCell(mouseWorldPos);
         activeTileSprite = BaseTilemap.GetSprite(activeTileCoordinate);
+
+        Debug.Log("Start coords are : " + GameManager.startCoordinates);
 
         if (Input.GetMouseButtonDown(0))
         {
