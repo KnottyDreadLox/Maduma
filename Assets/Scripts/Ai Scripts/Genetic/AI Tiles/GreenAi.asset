@@ -10,7 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ab59801b1fadf44c957d92f806804a3, type: 3}
-  m_Name: BlueAi
+  m_Name: GreenAi
   m_EditorClassIdentifier: 
-  NodeName: Blue
-  tile: {fileID: 11400000, guid: 402b099ef99de7442933cfbf2464553e, type: 2}
+  DNAName: Green
+  tile: {fileID: 11400000, guid: 033dfad6918897e4780b46d825aeb739, type: 2}
+  id: 2

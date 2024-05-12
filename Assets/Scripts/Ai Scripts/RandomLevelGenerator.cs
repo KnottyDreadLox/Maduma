@@ -73,7 +73,7 @@ public class RandomLevelGenerator : MonoBehaviour
         Debug.Log("Start Position: " + startPos);
 
         GameManager.startCoordinates = startPos; // Set start position in GameManager
-        GameManager.endCoordinates = new List<Vector3Int>(); // Clear the list before populating it
+        GameManager.endCoordinatesDynamic = new List<Vector3Int>(); // Clear the list before populating it
 
         // Place end tiles
         foreach (TileBase endTile in endTiles)
@@ -83,11 +83,11 @@ public class RandomLevelGenerator : MonoBehaviour
             {
                 endPos = new Vector3Int(width, Random.Range(0, height), 0);
             }
-            while (GameManager.endCoordinates.Contains(endPos)); // Check if the position already exists
+            while (GameManager.endCoordinatesDynamic.Contains(endPos)); // Check if the position already exists
 
             tilemap.SetTile(endPos, endTile);
             Debug.Log("End Position: " + endPos);
-            GameManager.endCoordinates.Add(endPos); // Add unique end position to GameManager
+            GameManager.endCoordinatesDynamic.Add(endPos); // Add unique end position to GameManager
         }
     }
 

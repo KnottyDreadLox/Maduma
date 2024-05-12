@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ab59801b1fadf44c957d92f806804a3, type: 3}
   m_Name: YellowAi
   m_EditorClassIdentifier: 
-  NodeName: Yellow
+  DNAName: Yellow
   tile: {fileID: 11400000, guid: 8855b297ad6814242840e5ea9dc8f546, type: 2}
+  id: 5

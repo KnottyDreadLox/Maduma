@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DNAMatrix : MonoBehaviour
+public class DNAMatrix
 {
     //Creates a Matrix of vector positions
     private Vector3Int[,] matrix;
@@ -46,23 +46,23 @@ public class DNAMatrix : MonoBehaviour
     }
 
 
-    public DNA GetDNA(int row, int col)
+    public DNA GetDNA(int x, int y)
     {
-        return DNAs[row, col];
+        return DNAs[x, y];
     }
 
-    public void SetDNA(int row, int col, DNA dna)
+    public void SetDNA(int x, int y, DNA dna)
     {
-        this.DNAs[row, col] = dna;
+        this.DNAs[x, y] = dna;
     }
 
-    public string GetDNAName(int row, int col)
+    public string GetDNAName(int x, int y)
     {
-        return DNAs[row, col].name;
+        return DNAs[x, y].name;
     }
 
-    public void SetDNAName(int row, int col, string name)
+    public void SetDNAName(int x, int y, string name)
     {
-        DNAs[row, col].name = name;
+        DNAs[x, y].name = name;
     }
 }

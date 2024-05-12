@@ -38,28 +38,28 @@ public class MotherNature : MonoBehaviour
     }
 
 
-    public void Combine(DNA d1, DNA d2)
-    {
-        int i = 0;
+    //public void Combine(DNA d1, DNA d2)
+    //{
+    //    int i = 0;
 
-        Dictionary<bool, int> newGenes = new Dictionary<bool, int>();
+    //    Dictionary<bool, int> newGenes = new Dictionary<bool, int>();
 
-        foreach (KeyValuePair<bool, int> gene in genetics)
-        {
-            if (i < dnaLenght / 2)
-            {
-                newGenes.Add(gene.Key, d1.genetics[gene.Key]);
-            }
-            else
-            {
-                newGenes.Add(gene.Key, d2.genetics[gene.Key]);
-            }
+    //    foreach (KeyValuePair<bool, int> gene in genetics)
+    //    {
+    //        if (i < dnaLenght / 2)
+    //        {
+    //            newGenes.Add(gene.Key, d1.genetics[gene.Key]);
+    //        }
+    //        else
+    //        {
+    //            newGenes.Add(gene.Key, d2.genetics[gene.Key]);
+    //        }
 
-            i++;
-        }
+    //        i++;
+    //    }
 
-        genetics = newGenes;
-    }
+    //    genetics = newGenes;
+    //}
 
     public float GetGene(bool active)
     {

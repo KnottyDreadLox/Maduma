@@ -31,8 +31,9 @@ public class GameManager : MonoBehaviour
     
 
     public static Vector3Int startCoordinates;
+    public static Vector3Int endCoordinatesStatic;
 
-    public static List<Vector3Int> endCoordinates;
+    public static List<Vector3Int> endCoordinatesDynamic;
 
     private Quaternion defaultRotation;
     private Quaternion clockwiseRotation;

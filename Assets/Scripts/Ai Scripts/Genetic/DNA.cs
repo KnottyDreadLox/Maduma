@@ -11,6 +11,7 @@ public class DNA : ScriptableObject
 
     public TileBase tile;
 
-    public  Dictionary<bool, int> genetics;
+    public int id;
+
 
 }
