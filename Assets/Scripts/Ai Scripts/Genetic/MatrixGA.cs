@@ -7,9 +7,6 @@ public class MatrixGA : MonoBehaviour
 {
     private const double MUTATION_RATE = 0.1;
 
-
-
-
     public DNAMatrix GeneticallyMutateMatrix(DNAMatrix parent1, DNAMatrix parent2, DNA[] DNAs)
     {
 
@@ -18,7 +15,7 @@ public class MatrixGA : MonoBehaviour
         Debug.Log("<color=yellow> =============== NEW CHILD ==============</color>");
         PrintMatrix(child);
 
-        Mutate(child, DNAs);
+        //child = Mutate(child, DNAs);
 
         Debug.Log("Mutated Child:");
         PrintMatrix(child);
@@ -60,25 +57,26 @@ public class MatrixGA : MonoBehaviour
     }
 
     // Mutate a matrix
-    private void Mutate(DNAMatrix matrix, DNA[] DNAs)
+    private DNAMatrix Mutate(DNAMatrix matrix, DNA[] DNAs)
     {
-        for (int x = 0; x < matrix.Rows; x++)
+        DNAMatrix mutatedMatrix = matrix;
+
+        for (int x = 0; x < mutatedMatrix.Rows; x++)
         {
-            for (int y = 0; y < matrix.Columns; y++)
+            for (int y = 0; y < mutatedMatrix.Columns; y++)
             {
                 if (Random.Range(0, 1) < MUTATION_RATE)
-
                 {
                     // Get the DNA at this position
-                    DNA currentDNA = matrix.GetDNA(x, y);
-
-                    currentDNA = DNAs[Random.Range(0,DNAs.Length)];
+                    DNA currentDNA = DNAs[GetRandomExceptThis(mutatedMatrix.GetDNA(x, y), DNAs)];
 
                     // Set the mutated DNA back into the matrix
                     matrix.SetDNA(x, y, currentDNA);
                 }
             }
         }
+
+        return mutatedMatrix;
     }
 
 
