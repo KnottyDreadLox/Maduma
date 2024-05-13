@@ -111,7 +111,7 @@ public class TileManager : MonoBehaviour
         activeTileCoordinate = grid.WorldToCell(mouseWorldPos);
         activeTileSprite = BaseTilemap.GetSprite(activeTileCoordinate);
 
-        Debug.Log("Start coords are : " + GameManager.startCoordinates);
+        //Debug.Log("Start coords are : " + GameManager.startCoordinates);
 
         if (Input.GetMouseButtonDown(0))
         {

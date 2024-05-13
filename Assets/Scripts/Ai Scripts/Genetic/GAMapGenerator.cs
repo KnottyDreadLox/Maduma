@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -16,12 +17,25 @@ public class GAMapGenerator : MonoBehaviour
 
     MatrixGA matrixGA;
 
+    [Header("Available Tileset to Generate.")]
+    [Tooltip("This array contains all the tiles that the level generator will use. Include any tiles, even special tiles. If you add special tiles, add them to the below specials")]
     //Dna genetics 
     public DNA[] dnaArray;
 
+    [Header("Start Tiles")]
+    [Tooltip("More start tiles equals more starting locations.")]
     //Start and end tiles
     public TileBase[] startTiles;
+
+
+    [Header("End Tiles")]
+    [Tooltip("More end tiles equals more end locations.")]
     public TileBase[] endTiles;
+
+
+    [Header("Special DNA Tiles")]
+    [Tooltip("Put the special Empty tile here so the engine can recognize which one to ignore when performing fitness check.")]
+    public DNA specialEmptyDna;
 
     //Values given based on Tiles array lenght. 
     private int width;
@@ -39,8 +53,19 @@ public class GAMapGenerator : MonoBehaviour
     private void Awake()
     {
         //set height + width to be lenght of the array of tiles
-        height = dnaArray.Length;
-        width = dnaArray.Length;
+
+        //first check if the List has the special empty tile, if it does, count 1 less, else set them to be equal.
+        if (!dnaArray.ToList().Contains(specialEmptyDna))
+        {
+            height = dnaArray.Length - 1;
+            width = dnaArray.Length - 1;
+        }
+        else
+        {
+            height = dnaArray.Length;
+            width = dnaArray.Length;
+        }
+
     }
 
 
@@ -246,6 +271,7 @@ public class GAMapGenerator : MonoBehaviour
 
     public void LoadGame()
     {
+
         List<DNAMatrix> randomMatrices = new List<DNAMatrix>();
 
         randomMatrices = GenerateRandomMatrices(initialMatricesToGenerate);
@@ -258,7 +284,9 @@ public class GAMapGenerator : MonoBehaviour
 
         Debug.Log("<color=green> There are " + validMatrices.Count + " valid playable DNAMatrices </color>");
 
+
         PlaceStartAndEndTileFixed();
+        PlaceTilesOnTilemap(validMatrices[Random.Range(0, validMatrices.Count)]);
     }
 
 
@@ -284,42 +312,30 @@ public class GAMapGenerator : MonoBehaviour
 
         List<int> tileColoursActived = new List<int>();
 
-        Vector3Int startPos = GameManager.startCoordinates;
+        //y pos follows the player, essentially acts as the 'active position'
+        int yPos = GameManager.startCoordinates.y;
 
         //TODO - Continue fitness model to check neighbouring tiles
         for(int x = 0; x < matrix.Columns; x++)
         {
-            int r = Random.Range(0, 100);
+            
+            //check if next tiles are valid. Also ensure that the next tile is not the empty tile '0'
 
-            if (!tileColoursActived.Contains(matrix.GetDNA(x, startPos.y).id))
+            if (!tileColoursActived.Contains(matrix.GetDNA(x, yPos).id) && matrix.GetDNA(x, yPos).id != 0)
             {
-                tileColoursActived.Add(matrix.GetDNA(x, startPos.y).id);
+                tileColoursActived.Add(matrix.GetDNA(x, yPos).id);
             }
 
-            //ivery iteration checks bot or top first randomly
-            if(r < 50)
+            else if (!tileColoursActived.Contains(matrix.GetDNA(x, yPos + 1).id) && matrix.GetDNA(x, yPos).id != 0)
             {
-                if (!tileColoursActived.Contains(matrix.GetDNA(x, startPos.y + 1).id))
-                {
-                    tileColoursActived.Add(matrix.GetDNA(x, startPos.y + 1).id);
-                }
-
-                else if (!tileColoursActived.Contains(matrix.GetDNA(x, startPos.y - 1).id))
-                {
-                    tileColoursActived.Add(matrix.GetDNA(x, startPos.y - 1).id);
-                }
+                tileColoursActived.Add(matrix.GetDNA(x, yPos + 1).id);
+                yPos++;
             }
-            else
-            {
-                if (!tileColoursActived.Contains(matrix.GetDNA(x, startPos.y - 1).id))
-                {
-                    tileColoursActived.Add(matrix.GetDNA(x, startPos.y - 1).id);
-                }
 
-                else if (!tileColoursActived.Contains(matrix.GetDNA(x, startPos.y + 1).id))
-                {
-                    tileColoursActived.Add(matrix.GetDNA(x, startPos.y + 1).id);
-                }
+            else if (!tileColoursActived.Contains(matrix.GetDNA(x, yPos - 1).id) && matrix.GetDNA(x, yPos).id != 0)
+            {
+                tileColoursActived.Add(matrix.GetDNA(x, yPos - 1).id);
+                yPos--;
             }
 
         }
