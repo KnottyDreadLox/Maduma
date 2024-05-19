@@ -21,9 +21,20 @@ public class AiLevelGenBtn : MonoBehaviour
         char shrt = btnName[btnName.Length - 1];
         int map = Convert.ToInt32(Convert.ToString(shrt));
 
-        DNAMatrix thisMap = mapGen.DNAMatrices[map];
-
+        DNAMatrix thisMap = mapGen.DNAMatrices[map - 1];
         mapGen.PlaceTilesOnTilemap(thisMap);
+
+        //if (btnName.Contains("Random"))
+        //{
+        //    DNAMatrix thisMap = mapGen.DNAMatrices[map-1];
+        //    mapGen.PlaceTilesOnTilemap(thisMap);
+        //}
+        //else
+        //{
+        //    DNAMatrix thisMap = mapGen.SavedMatrices[map-1];
+        //    mapGen.PlaceTilesOnTilemap(thisMap);
+        //}
+
     }
 
     public void SaveMap()
@@ -34,7 +45,9 @@ public class AiLevelGenBtn : MonoBehaviour
         string btnName = gameObject.GetComponentInChildren<TextMeshProUGUI>().text;
         char shrt = btnName[btnName.Length - 1];
         int map = Convert.ToInt32(Convert.ToString(shrt));
-        DNAMatrix thisMap = mapGen.DNAMatrices[map];
+        DNAMatrix thisMap = mapGen.DNAMatrices[map - 1];
+
+        Debug.Log(mapGen.SavedMatrices.Count);
 
         //Unsave
         if (isSaved)
@@ -56,7 +69,7 @@ public class AiLevelGenBtn : MonoBehaviour
 
         else
         {
-            Debug.Log("Not Enough Random Maps Generated !");
+            Debug.Log("Already have 2 Saved !");
         }
     }
 

@@ -241,7 +241,7 @@ public class GAMapGenerator : MonoBehaviour
 
         DNAMatrix childMatrix = matrixGA.GeneticallyMutateMatrix(A, B, dnaArray);
 
-        SavedMatrices.Add(childMatrix);
+        DNAMatrices.Add(childMatrix);
 
         PlaceTilesOnTilemap(childMatrix);
 
@@ -263,34 +263,32 @@ public class GAMapGenerator : MonoBehaviour
 
     public void Mutate()
     {
-        ////The first one is random auto generated, the second is forcefully also randomly generated
-        ////the rest that follow are genetic mutations of the first 2 randoms
-        //if (DNAMatrices.Count <= 2)
-        //{
-        //    GenerateRandomLevel();
-        //}
-        //else
-        //{
-        //    GeneticallyGenerateLevel();
-        //}
 
         //Check if there is at least 2 (1) selected matrices
         if(SavedMatrices.Count >= 1)
         {
-            //Generate new level
-            GeneticallyGenerateLevel(SavedMatrices[0], SavedMatrices[1]);
+
+            DNAMatrices.Clear();
+            DNAMatrices.Add(SavedMatrices[0]);
+            DNAMatrices.Add(SavedMatrices[1]);
+
+            SavedMatrices.Clear();
+
+
+            GeneticallyGenerateLevel(DNAMatrices[0], DNAMatrices[1]);
 
             //Spawn new buttons to pick. 
-            scrollViewFiller.AddButtons(SavedMatrices.Count , "Children");
+            scrollViewFiller.AddButtons(DNAMatrices.Count , "Children");
 
-            //Clear the saved matrices
-            SavedMatrices.Clear();
+
 
         }
         else
         {
             Debug.Log("<color=red> MUST HAVE AT LEAST 2 SAVED MATRICES </color>");
         }
+
+
     }
 
 
@@ -312,7 +310,10 @@ public class GAMapGenerator : MonoBehaviour
         scrollViewFiller.AddButtons(validMatrices.Count, "Random");
 
         PlaceStartAndEndTileFixed();
-        PlaceTilesOnTilemap(validMatrices[Random.Range(0, validMatrices.Count)]);
+
+        tilemap.ClearAllTiles();
+        SavedMatrices.Clear();
+        //PlaceTilesOnTilemap(validMatrices[Random.Range(0, validMatrices.Count)]);
     }
 
 
