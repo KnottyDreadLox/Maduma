@@ -76,24 +76,24 @@ public class TileManager : MonoBehaviour
         switch (_case)
         {
             case "normal":
-                t = activeTileCoordinate - new Vector3Int(-1, -1, 0); ;
-                m = activeTileCoordinate - new Vector3Int(-1, 0, 0); ;
-                b = activeTileCoordinate - new Vector3Int(-1, 1, 0); ;
+                t = activeTileCoordinate - new Vector3Int(-1, -1, 0); 
+                m = activeTileCoordinate - new Vector3Int(-1, 0, 0); 
+                b = activeTileCoordinate - new Vector3Int(-1, 1, 0); 
                 Debug.Log("<color=lime> Switched to Normal </color>");
                 break;
 
 
             case "clockwise":
-                t = activeTileCoordinate - new Vector3Int(-1, 1, 0); ;
-                m = activeTileCoordinate - new Vector3Int(0, 1, 0); ;
-                b = activeTileCoordinate - new Vector3Int(1, 1, 0); ;
+                t = activeTileCoordinate - new Vector3Int(-1, 1, 0); 
+                m = activeTileCoordinate - new Vector3Int(0, 1, 0); 
+                b = activeTileCoordinate - new Vector3Int(1, 1, 0); 
                 Debug.Log("<color=lime> Switched to Clockwise </color>");
                 break;
 
             case "anticlockwise":
-                t = activeTileCoordinate - new Vector3Int(1, -1, 0); ;
-                m = activeTileCoordinate - new Vector3Int(0, -1, 0); ;
-                b = activeTileCoordinate - new Vector3Int(-1, -1, 0); ;
+                t = activeTileCoordinate - new Vector3Int(1, -1, 0); 
+                m = activeTileCoordinate - new Vector3Int(0, -1, 0); 
+                b = activeTileCoordinate - new Vector3Int(-1, -1, 0); 
                 Debug.Log("<color=lime> Switched to Anticlockwise </color>");
                 break;
         }

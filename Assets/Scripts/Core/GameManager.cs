@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
         // Calculate anticlockwise rotation (90 degrees anticlockwise)
         anticlockwiseRotation = defaultRotation * Quaternion.Euler(0, -90, 0);
 
-        clockText = GameObject.Find("TimeTxt").GetComponent<TextMeshProUGUI>();
+        //clockText = GameObject.Find("TimeTxt").GetComponent<TextMeshProUGUI>();
         StartClock = false;
     }
 

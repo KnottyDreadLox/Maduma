@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MatrixGA : MonoBehaviour
 {
-    private const double MUTATION_RATE = 0.1;
+    private const float MUTATION_RATE = 0.1f;
 
     public DNAMatrix GeneticallyMutateMatrix(DNAMatrix parent1, DNAMatrix parent2, DNA[] DNAs)
     {
@@ -65,7 +65,7 @@ public class MatrixGA : MonoBehaviour
         {
             for (int y = 0; y < mutatedMatrix.Columns; y++)
             {
-                if (Random.Range(0, 1) < MUTATION_RATE)
+                if (Random.Range(0, 1f) < MUTATION_RATE)
                 {
                     // Get the DNA at this position
                     DNA currentDNA = DNAs[GetRandomExceptThis(mutatedMatrix.GetDNA(x, y), DNAs)];
