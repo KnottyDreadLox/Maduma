@@ -1041,7 +1041,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 42775995}
   m_HandleRect: {fileID: 42775994}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0.99999964
   m_Size: 0.72613335
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1615,6 +1615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1044a3fdf141004f8b6671b0db3c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numOfChildren: 10
   height: 4
   fixedStartPos: 3
   initialMatricesToGenerate: 20

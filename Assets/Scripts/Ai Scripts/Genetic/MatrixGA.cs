@@ -15,7 +15,7 @@ public class MatrixGA : MonoBehaviour
         Debug.Log("<color=yellow> =============== NEW CHILD ==============</color>");
         PrintMatrix(child);
 
-        //child = Mutate(child, DNAs);
+        child = Mutate(child, DNAs);
 
         Debug.Log("Mutated Child:");
         PrintMatrix(child);
@@ -39,7 +39,7 @@ public class MatrixGA : MonoBehaviour
                 DNA dnaChild;
 
                 int r = Random.Range(0, 100);
-                Debug.Log("<color=red> Random Number : " + r + " </color>");
+                //Debug.Log("<color=red> Random Number : " + r + " </color>");
 
                 // Randomly choose genes from parents
                 if (r <= 50)
@@ -47,7 +47,7 @@ public class MatrixGA : MonoBehaviour
                 else
                     dnaChild = parent2.GetDNA(x, y);
 
-                Debug.Log("Random Range : " + r + " at (" + x + ","+ y + ")");
+                //Debug.Log("Random Range : " + r + " at (" + x + ","+ y + ")");
                 //sets the new child in place in thew new matrix
                 dnaMatrixChild.SetDNA(x, y, dnaChild);
             }
@@ -65,6 +65,7 @@ public class MatrixGA : MonoBehaviour
         {
             for (int y = 0; y < mutatedMatrix.Columns; y++)
             {
+                //for each tile in the matrix, possible mutate it
                 if (Random.Range(0, 1f) < MUTATION_RATE)
                 {
                     // Get the DNA at this position
