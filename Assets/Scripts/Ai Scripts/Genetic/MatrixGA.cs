@@ -10,17 +10,17 @@ public class MatrixGA : MonoBehaviour
     public DNAMatrix GeneticallyMutateMatrix(DNAMatrix parent1, DNAMatrix parent2, DNA[] DNAs)
     {
 
-        DNAMatrix child = Crossover(parent1, parent2);
+        DNAMatrix mutatedChild = Crossover(parent1, parent2);
 
-        Debug.Log("<color=yellow> =============== NEW CHILD ==============</color>");
-        PrintMatrix(child);
+        //Debug.Log("<color=yellow> =============== NEW CHILD ==============</color>");
+        //PrintMatrix(child);
 
-        child = Mutate(child, DNAs);
+        mutatedChild = Mutate(mutatedChild, DNAs);
 
-        Debug.Log("Mutated Child:");
-        PrintMatrix(child);
+        //Debug.Log("Mutated Child:");
+        //PrintMatrix(child);
 
-        return child;
+        return mutatedChild;
     }
 
     // Crossover two parent matrices to produce a child matrix
@@ -68,11 +68,11 @@ public class MatrixGA : MonoBehaviour
                 //for each tile in the matrix, possible mutate it
                 if (Random.Range(0, 1f) < MUTATION_RATE)
                 {
-                    // Get the DNA at this position
-                    DNA currentDNA = DNAs[GetRandomExceptThis(mutatedMatrix.GetDNA(x, y), DNAs)];
+                    // Get the DNA that will go at this position
+                    DNA newDNA = DNAs[Random.Range(0, DNAs.Length)];
 
-                    // Set the mutated DNA back into the matrix
-                    matrix.SetDNA(x, y, currentDNA);
+                    // Set the new DNA to replace the current on in this position
+                    matrix.SetDNA(x, y, newDNA);
                 }
             }
         }
@@ -90,7 +90,6 @@ public class MatrixGA : MonoBehaviour
         } while (DNAs[randomIndex] == currentDNA); // Repeat until a different index is generated
         return randomIndex;
     }
-
 
     // Helper method to print a matrix
     private void PrintMatrix(DNAMatrix matrix)

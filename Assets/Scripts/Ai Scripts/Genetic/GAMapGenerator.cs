@@ -1,29 +1,22 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class GAMapGenerator : MonoBehaviour
 {
-    [SerializeField]
-    private int numOfChildren;
+    //========== MAP PROPERTIES ============
 
-    //Values given based on Tiles array lenght. 
-    private int width;
+    private int height = 4;
 
-    [SerializeField]
-    private int height;
-
-    [SerializeField]
     private int fixedStartPos = 3;
-    
+
     [SerializeField]
-    private int initialMatricesToGenerate;
-
-    //Game tilemap
     public Tilemap tilemap;
-
-    MatrixGA matrixGA;
 
     [Header("Available Tileset to Generate.")]
     [Tooltip("This array contains all the tiles that the level generator will use. Include any tiles, even special tiles. If you add special tiles, add them to the below specials")]
@@ -45,7 +38,32 @@ public class GAMapGenerator : MonoBehaviour
     [Tooltip("Put the special Empty tile here so the engine can recognize which one to ignore when performing fitness check.")]
     public DNA specialEmptyDna;
 
+    //========== SCROLLBARS ============
+
+    [SerializeField]
+    private ScrollBarHandler numOfMapsToGenerateSb;
+
+    [SerializeField]
+    private ScrollBarHandler numOfEmptyTiles;
+
+    [SerializeField]
+    private ScrollBarHandler numOfChildren;
+
+    //========== Misc. ============
+
+
+    private MatrixGA matrixGA;
+
     private DNAMatrix geneticMatrix;
+
+    ScrollViewFiller scrollViewFiller;
+
+    //Value fixed based on Tiles array lenght. 
+    private int width;
+
+
+
+    //========== MATRICES ============
 
     //This will be the memory of the generated matrices
     public List<DNAMatrix> DNAMatrices = new List<DNAMatrix>();
@@ -54,10 +72,6 @@ public class GAMapGenerator : MonoBehaviour
 
     public List<DNAMatrix> InvalidMatrices = new List<DNAMatrix>();
 
-    //counts button clicks - this will be used for keeping track of mutations
-    int mutationBtnCounter = 0;
-
-    ScrollViewFiller scrollViewFiller;
 
     //Must be Awake to trigger coordinates for GameManager
     private void Awake()
@@ -78,11 +92,6 @@ public class GAMapGenerator : MonoBehaviour
 
     }
 
-
-    private void Update()
-    {
-        //Debug.Log("Start Pos is " + GameManager.startCoordinates);
-    }
 
     void Start()
     {
@@ -106,8 +115,9 @@ public class GAMapGenerator : MonoBehaviour
             case 'Y':
                 return "<color=yellow>" + character + "</color>";
             case 'P':
-                return "<color=pink>" + character + "</color>";
-
+                return "<color=magenta>" + character + "</color>";
+            case 'E':
+                return "<color=white>" + character + "</color>";
             case 'O':
                 return "<color=orange>" + character + "</color>";
             default:
@@ -116,7 +126,7 @@ public class GAMapGenerator : MonoBehaviour
         }
     }
 
-    void PlaceStartAndEndTileFixed()
+    void PlaceStartEndTileFixed()
     {
 
         Vector3Int startPos = new Vector3Int(-1, height - fixedStartPos, 0);
@@ -189,9 +199,9 @@ public class GAMapGenerator : MonoBehaviour
 
         //Creates a genetic matrix of this level.
         geneticMatrix = new DNAMatrix(width, height);                   // Initialize the matrix
-        DNAMatrices.Add(geneticMatrix);                                 //saves this matrix layout in memory.
+        //DNAMatrices.Add(geneticMatrix);                                 //saves this matrix layout in memory.
 
-        PlaceStartAndEndTileFixed();
+        //PlaceStartAndEndTileFixed();
         PlaceRandomTiles();
 
         return geneticMatrix;
@@ -216,8 +226,10 @@ public class GAMapGenerator : MonoBehaviour
         }
 
 
+        Debug.Log("=====================");
+
         //This code is for debug of the postions of tiles kinda long...
-        Debug.Log("Tile Matrix:");
+        Debug.Log("Random Tile Matrix:");
 
 
         for (int row = 0; row < height; row++)
@@ -235,16 +247,19 @@ public class GAMapGenerator : MonoBehaviour
 
             Debug.Log(rowString);
         }
+
+        Debug.Log("=====================");
+
     }
 
 
     private DNAMatrix GeneticallyGenerateLevel(DNAMatrix A, DNAMatrix B)
     {
-        Debug.Log("<color=green> GENNERATING GENETIC LEVEL </color>");
+        //Debug.Log("<color=green> GENNERATING GENETIC LEVEL </color>");
 
         tilemap.ClearAllTiles();
 
-        PlaceStartAndEndTileFixed();
+        //PlaceStartAndEndTileFixed();
 
         DNAMatrix childMatrix = matrixGA.GeneticallyMutateMatrix(A, B, dnaArray);
 
@@ -268,26 +283,44 @@ public class GAMapGenerator : MonoBehaviour
     public void Mutate()
     {
         //Check if there is at least 2 (1) selected matrices
-        if(SavedMatrices.Count >= 1)
+        if (SavedMatrices.Count >= 1)
         {
-            //Clear the Matrices
+            //Clear the Matrices from memory
             DNAMatrices.Clear();
 
             //Add the parents to the main pool of matrices
             DNAMatrices.Add(SavedMatrices[0]);
             DNAMatrices.Add(SavedMatrices[1]);
 
-            //Clear the Saved Matrices
+            //Clear rest of memory from previous run
             SavedMatrices.Clear();
+            InvalidMatrices.Clear();
 
-            //generate X amount of children
-            for(int i = 0;  i < numOfChildren; i++)
+            int x = 0;
+
+            //generate X amount of children. -2 modifier to compensate for the first 2 parents.
+            while ((DNAMatrices.Count - 2) != numOfChildren.GetScrollbarValue())
             {
                 DNAMatrix childMatrix = GeneticallyGenerateLevel(DNAMatrices[0], DNAMatrices[1]);
-                DNAMatrices.Add(childMatrix);
+
+                x++;
+
+                if (canFit(childMatrix))
+                {
+                    DNAMatrices.Add(childMatrix);
+                }
+                else
+                {
+                    InvalidMatrices.Add(childMatrix);
+                }
             }
 
-            //List<DNAMatrix> validMatrices = PerformFitnessCheck(DNAMatrices);
+            Debug.Log("<color=red> Total: " + x + "</color>");
+            Debug.Log("<color=orange> Invalid: " + InvalidMatrices.Count() + "</color>");
+            Debug.Log("<color=green> Valid: " + DNAMatrices.Count + "</color>");
+
+
+            //List<DNAMatrix> validMatrices = PerformListFitnessCheck(DNAMatrices);
 
             //Debug.Log("<color=green> There are " + validMatrices.Count + " valid playable DNAMatrices </color>");
 
@@ -296,7 +329,9 @@ public class GAMapGenerator : MonoBehaviour
             PlaceTilesOnTilemap(DNAMatrices[1]);
 
             //Spawn new buttons to pick. 
-            scrollViewFiller.AddButtons(DNAMatrices.Count , "Children");
+            scrollViewFiller.AddButtons(DNAMatrices.Count, "Children");
+
+            StartCoroutine(FixParentButtonText());
         }
         else
         {
@@ -304,48 +339,65 @@ public class GAMapGenerator : MonoBehaviour
         }
     }
 
+    //This a quick fix for the button text to fix the Parent's names after generating
+    IEnumerator FixParentButtonText()
+    {
+        yield return new WaitForSeconds(0.1f);
+        scrollViewFiller.contentArea.GetChild(0).gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Parent 1";
+        scrollViewFiller.contentArea.GetChild(1).gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Parent 2";
+    }
 
     public void LoadGame()
     {
+        //Clear everything from previous run
+        DNAMatrices.Clear();
+        InvalidMatrices.Clear();
+        SavedMatrices.Clear();
 
+        //List<DNAMatrix> validMatrices = new List<DNAMatrix>();
 
-        List<DNAMatrix> randomMatrices = GenerateRandomMatrices(initialMatricesToGenerate);
+        int x = 0;
 
-        Debug.Log("<color=green> Generated " + randomMatrices.Count + " random DNAMatrices </color>");
-
-        List<DNAMatrix> validMatrices = PerformFitnessCheck(randomMatrices);
-
-        Debug.Log("<color=green> There are " + validMatrices.Count + " valid playable DNAMatrices </color>");
-
-
-        //check each matrix in the random against the valid - add the invalid to a list
-        foreach(DNAMatrix matrix in randomMatrices)
+        while (DNAMatrices.Count != numOfMapsToGenerateSb.GetScrollbarValue())
         {
-            if (!validMatrices.Contains(matrix))
+            DNAMatrix newDNAMatrix = GenerateRandomLevel();
+            x++;
+            if (canFit(newDNAMatrix))
             {
-                InvalidMatrices.Add(matrix);
+                DNAMatrices.Add(newDNAMatrix);
+            }
+            else
+            {
+                InvalidMatrices.Add(newDNAMatrix);
             }
         }
 
-        Debug.Log("<color=orange> There are currently " + InvalidMatrices.Count() + " invalid matrices </color>");
+        Debug.Log("<color=red> Total: " + x + "</color>");
+        Debug.Log("<color=orange> Invalid: " + InvalidMatrices.Count() + "</color>");
+        Debug.Log("<color=green> Valid: " + DNAMatrices.Count + "</color>");
 
-        scrollViewFiller.AddButtons(validMatrices.Count, "Random");
-
-        PlaceStartAndEndTileFixed();
+        scrollViewFiller.AddButtons(DNAMatrices.Count, "Random");
 
         tilemap.ClearAllTiles();
+        PlaceStartEndTileFixed();
         SavedMatrices.Clear();
+
         //PlaceTilesOnTilemap(validMatrices[Random.Range(0, validMatrices.Count)]);
     }
 
+    private bool canFit(DNAMatrix newDNAMatrix)
+    {
+        return isPlayable(newDNAMatrix) && hasRequiredEmptyTiles(newDNAMatrix);
+    }
 
-    private List<DNAMatrix> PerformFitnessCheck(List<DNAMatrix> randomMatrices)
+    //Used for List of matrices, use if check for individuals
+    private List<DNAMatrix> PerformListFitnessCheck(List<DNAMatrix> randomMatrices)
     {
         List<DNAMatrix> validMatrices = new List<DNAMatrix>();
 
         foreach(DNAMatrix matrix in randomMatrices)
         {
-            if (isPlayable(matrix))
+            if (isPlayable(matrix) && hasRequiredEmptyTiles(matrix))
             {
                 validMatrices.Add(matrix);
             }
@@ -354,6 +406,34 @@ public class GAMapGenerator : MonoBehaviour
         return validMatrices;
     }
 
+    private bool hasRequiredEmptyTiles(DNAMatrix matrix)
+    {
+        int emptyTileCount = 0;
+
+        for (int x = 0; x < matrix.Rows; x++)
+        {
+            for (int y = 0; y < matrix.Columns; y++)
+            {
+                if(matrix.GetDNA(x, y).id == 0)     //0 is the reserved value for the empty tile
+                {
+                    emptyTileCount += 1;
+                }             
+            }
+        }
+
+        //Debug.Log("<color=green> There are " + emptyTileCount + " empty tiles in this matrix</color>");
+
+
+
+        if (emptyTileCount == numOfEmptyTiles.GetScrollbarValue())
+        {
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
+    }
 
     private bool isPlayable(DNAMatrix matrix)
     {

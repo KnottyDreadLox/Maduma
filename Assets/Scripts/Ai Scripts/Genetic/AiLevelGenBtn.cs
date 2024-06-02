@@ -47,7 +47,7 @@ public class AiLevelGenBtn : MonoBehaviour
         int map = Convert.ToInt32(Convert.ToString(shrt));
         DNAMatrix thisMap = mapGen.DNAMatrices[map - 1];
 
-        Debug.Log(mapGen.SavedMatrices.Count);
+        //Debug.Log(mapGen.SavedMatrices.Count);
 
         //Unsave
         if (isSaved)
