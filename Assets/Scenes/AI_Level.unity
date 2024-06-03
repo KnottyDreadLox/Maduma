@@ -3056,7 +3056,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1732487060}
   - component: {fileID: 1732487059}
-  - component: {fileID: 1732487061}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -3093,22 +3092,6 @@ Transform:
   - {fileID: 236237773}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1732487061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1732487058}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10395b69197a6b44eae4ed8d051ea53f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameManager: {fileID: 727687719}
-  baseTilemap: {fileID: 1170832752}
-  overlayTilemap: {fileID: 236237771}
-  overlayTile: {fileID: 11400000, guid: e4ef263b8effdb640a18f019f658e102, type: 2}
 --- !u!1 &1847423036
 GameObject:
   m_ObjectHideFlags: 0
@@ -3448,8 +3431,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1044a3fdf141004f8b6671b0db3c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  height: 4
-  fixedStartPos: 3
   tilemap: {fileID: 1170832752}
   dnaArray:
   - {fileID: 11400000, guid: 475a84bfde4bf07449f13eaecbd2050d, type: 2}
